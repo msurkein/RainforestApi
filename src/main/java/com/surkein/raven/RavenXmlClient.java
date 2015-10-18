@@ -3,6 +3,7 @@ package com.surkein.raven;
 import com.surkein.raven.model.Command;
 import com.surkein.raven.model.ConnectionStatus;
 import com.surkein.raven.model.DeviceInfo;
+import javafx.concurrent.ScheduledService;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
@@ -12,16 +13,22 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class RavenXmlClient {
     private final SerialPort port;
-    private JAXBContext jaxContext;
-    private Marshaller marshaller;
-    private Unmarshaller unmarshaller;
+    private final RavenXmlHandler handler;
+    private final Map<Long, String> dataMap;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     public RavenXmlClient(String portName) {
         port = new SerialPort("COM3");
+        dataMap = new HashMap<Long, String>();
+        handler = new RavenXmlHandler();
         try {
             port.openPort();
             port.setParams(SerialPort.BAUDRATE_115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
@@ -53,16 +60,29 @@ public class RavenXmlClient {
         } catch (SerialPortException e) {
             e.printStackTrace();
         }
-        try {
-            jaxContext = JAXBContext.newInstance(Command.class, ConnectionStatus.class);
-            marshaller = jaxContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, "Windows-1252");
-            unmarshaller = jaxContext.createUnmarshaller();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+
+        scheduler.scheduleAtFixedRate(new Runnable() {
+            public void run() {
+                try {
+                    String data = port.readString();
+                    Long time = System.currentTimeMillis();
+                    if(data != null) {
+                        System.out.println("Received data at: " + time + " : \r\n" + data);
+                        dataMap.put(time, data);
+                        FileWriter fw = new FileWriter(new File("D:/Projects/Personal/Rainforest/SampleFiles/" + time + ".xml"));
+                        fw.write(data);
+                        fw.close();
+                    }
+                    else {
+                        //System.out.println("No new data");
+                    }
+                } catch (SerialPortException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 1, 1, TimeUnit.SECONDS);
     }
     public ConnectionStatus getConnectionStatus() {
         synchronized (port) {
@@ -87,9 +107,7 @@ public class RavenXmlClient {
         try {
             String inputString = port.readString();
             System.out.println(inputString);
-            return (T) unmarshaller.unmarshal(new StringReader(inputString));
-        } catch (JAXBException e) {
-            e.printStackTrace();
+            return (T) handler.unmarshall(inputString);
         } catch (SerialPortException e) {
             e.printStackTrace();
         }
@@ -97,16 +115,12 @@ public class RavenXmlClient {
     }
 
     private void writeCommand(Command.Commands command) {
-        StringWriter stringWriter = new StringWriter();
         try {
-            marshaller.marshal(command.getCommand(), stringWriter);
-            String commandXml = stringWriter.toString();
+            String commandXml = handler.marshal(command.getCommand());
             if(!commandXml.endsWith("\r\n")) {
                 commandXml += "\r\n";
             }
             port.writeString(commandXml);
-        } catch (JAXBException e) {
-            e.printStackTrace();
         } catch (SerialPortException e) {
             e.printStackTrace();
         }

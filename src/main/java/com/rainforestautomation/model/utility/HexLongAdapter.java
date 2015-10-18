@@ -1,4 +1,4 @@
-package com.surkein.raven.model.utility;
+package com.rainforestautomation.model.utility;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

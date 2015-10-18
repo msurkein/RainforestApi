@@ -1,11 +1,27 @@
-package com.surkein.raven.model;
+package com.rainforestautomation.model;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Command")
 public class Command {
+    private String name;
+
+    public Command(String name) {
+        this.name = name;
+    }
+
+    protected Command() {
+    }
+
+    @XmlElement(name = "Name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     public enum Commands {
         initialize,
         restart,
@@ -30,24 +46,13 @@ public class Command {
         close_current_period,
         set_fast_poll,
         get_profile_data;
+        private Command command;
         Commands() {
             command = new Command(this.name());
         }
-        private Command command;
+
         public Command getCommand() {
             return command;
         }
     }
-    private String name;
-    @XmlElement(name="Name")
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public Command(String name) {
-        this.name = name;
-    }
-    protected Command() {}
 }

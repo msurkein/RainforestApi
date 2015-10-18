@@ -1,4 +1,4 @@
-package com.surkein.raven.model;
+package com.rainforestautomation.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

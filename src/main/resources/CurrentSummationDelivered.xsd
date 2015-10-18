@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+           elementFormDefault="qualified">
+    <xs:element name="CurrentSummationDelivered" type="CurrentSummationDeliveredType"/>
+    <xs:complexType name="CurrentSummationDeliveredType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="DeviceMacId"/>
+            <xs:element type="xs:string" name="MeterMacId"/>
+            <xs:element type="xs:string" name="TimeStamp"/>
+            <xs:element type="xs:string" name="SummationDelivered"/>
+            <xs:element type="xs:string" name="SummationReceived"/>
+            <xs:element type="xs:string" name="Multiplier"/>
+            <xs:element type="xs:string" name="Divisor"/>
+            <xs:element type="xs:string" name="DigitsRight"/>
+            <xs:element type="xs:string" name="DigitsLeft"/>
+            <xs:element type="xs:string" name="SuppressLeadingZero"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

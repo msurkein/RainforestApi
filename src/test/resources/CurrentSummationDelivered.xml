@@ -1,0 +1,12 @@
+<CurrentSummationDelivered>
+    <DeviceMacId>0xd8d5b90000005eba</DeviceMacId>
+    <MeterMacId>0x00078100008aa2fd</MeterMacId>
+    <TimeStamp>0x1db65bfd</TimeStamp>
+    <SummationDelivered>0x0000000002bde2cc</SummationDelivered>
+    <SummationReceived>0x0000000000000000</SummationReceived>
+    <Multiplier>0x00000001</Multiplier>
+    <Divisor>0x000003e8</Divisor>
+    <DigitsRight>0x01</DigitsRight>
+    <DigitsLeft>0x06</DigitsLeft>
+    <SuppressLeadingZero>Y</SuppressLeadingZero>
+</CurrentSummationDelivered>

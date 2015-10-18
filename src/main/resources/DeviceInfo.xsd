@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+           elementFormDefault="qualified">
+    <xs:element name="DeviceInfo" type="DeviceInfoType"/>
+    <xs:complexType name="DeviceInfoType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="DeviceMacId"/>
+            <xs:element type="xs:string" name="InstallCode"/>
+            <xs:element type="xs:string" name="LinkKey"/>
+            <xs:element type="xs:string" name="FWVersion"/>
+            <xs:element type="xs:string" name="HWVersion"/>
+            <xs:element type="xs:string" name="ImageType"/>
+            <xs:element type="xs:string" name="Manufacturer"/>
+            <xs:element type="xs:string" name="ModelId"/>
+            <xs:element type="xs:string" name="DateCode"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,13 +1,8 @@
 package com.surkein.raven;
 
-import com.surkein.raven.model.Command;
-import com.surkein.raven.model.ConnectionStatus;
-import com.surkein.raven.model.InstantaneousDemand;
+import com.rainforestautomation.model.*;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -18,7 +13,7 @@ public class RavenXmlHandler {
     private Unmarshaller unmarshaller;
     public RavenXmlHandler() {
         try {
-            jaxContext = JAXBContext.newInstance(Command.class, ConnectionStatus.class, InstantaneousDemand.class);
+            jaxContext = JAXBContext.newInstance(Command.class, ConnectionStatus.class, InstantaneousDemand.class, DeviceInfo.class, CurrentSummationDelivered.class);
             marshaller = jaxContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, false);
@@ -33,7 +28,11 @@ public class RavenXmlHandler {
         try {
             return (T) unmarshaller.unmarshal(new StringReader(inputString));
         } catch (JAXBException e) {
-            e.printStackTrace();
+            if (e instanceof UnmarshalException) {
+                throw new RuntimeException(e);
+            } else {
+                e.printStackTrace();
+            }
         }
         return null;
     }

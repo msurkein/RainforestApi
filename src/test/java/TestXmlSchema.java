@@ -1,7 +1,9 @@
 import com.google.common.io.ByteStreams;
+import com.rainforestautomation.model.CurrentSummationDelivered;
+import com.rainforestautomation.model.InstantaneousDemand;
 import com.surkein.raven.RavenXmlHandler;
-import com.surkein.raven.model.InstantaneousDemand;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -9,10 +11,15 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 
 public class TestXmlSchema {
+    RavenXmlHandler handler;
+
+    @Before
+    public void setup() {
+        handler = new RavenXmlHandler();
+    }
     @Test
     public void testInstantaneousDemand() {
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("InstantaneousDemand.xml");
-        RavenXmlHandler handler = new RavenXmlHandler();
         try {
             byte[] bytes = ByteStreams.toByteArray(inputStream);
             InstantaneousDemand unmarshall = handler.unmarshall(new String(bytes));
@@ -29,5 +36,20 @@ public class TestXmlSchema {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testSummationDelivered() {
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("CurrentSummationDelivered.xml");
+
+        try {
+            byte[] bytes = ByteStreams.toByteArray(inputStream);
+            CurrentSummationDelivered delivered = handler.unmarshall(new String(bytes));
+            Assert.assertNotNull(delivered);
+            Assert.assertTrue(delivered.getDemandAsDecimal() + " != " + BigDecimal.valueOf(45998.796), delivered.getDemandAsDecimal().compareTo(BigDecimal.valueOf(45998.796)) == 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

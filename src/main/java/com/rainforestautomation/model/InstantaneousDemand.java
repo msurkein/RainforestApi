@@ -1,6 +1,6 @@
-package com.surkein.raven.model;
+package com.rainforestautomation.model;
 
-import com.surkein.raven.model.utility.HexLongAdapter;
+import com.rainforestautomation.model.utility.HexLongAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

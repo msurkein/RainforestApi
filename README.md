@@ -13,7 +13,7 @@ System.out.println(deviceInfo.getDeviceMacId);
 ```
 
 ## Future
-Currently, the library is very limited but in the future it will expand to support the entire RAVEn XML API.  Right now it only supports listening for broadcasted events from the device.  Sending messages to the device works sporadically.
+The library is very limited currently but in the future it will expand to support the entire RAVEn XML API.  Right now it only supports listening for broadcasted events from the device.  Sending messages to the device works sporadically.
 
 ## Libraries Used
 Serial port support is provided by jssc - https://github.com/scream3r/java-simple-serial-connector

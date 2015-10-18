@@ -7,8 +7,9 @@ More information about the API can be found here: http://rainforestautomation.co
 To use this library, simply create an instance of a RavenXmlClient class and use the methods on it to interact with the device.
 ```java
 RavenXmlClient client = new RavenXmlClient("COM1");
-DeviceInfo info = client.getDeviceInfo();
-System.out.println(info.getDeviceMacId);
+CompletableFuture<Object> info = client.getDeviceInfo();
+DeviceInfo deviceInfo = (DeviceInfo) info.get();
+System.out.println(deviceInfo.getDeviceMacId);
 ```
 
 ## Future

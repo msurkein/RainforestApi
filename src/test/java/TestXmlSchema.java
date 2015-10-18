@@ -41,11 +41,11 @@ public class TestXmlSchema {
     @Test
     public void testSummationDelivered() {
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("CurrentSummationDelivered.xml");
-
         try {
             byte[] bytes = ByteStreams.toByteArray(inputStream);
             CurrentSummationDelivered delivered = handler.unmarshall(new String(bytes));
             Assert.assertNotNull(delivered);
+            Assert.assertNotNull(delivered.getSuppressLeadingZero());
             Assert.assertTrue(delivered.getDemandAsDecimal() + " != " + BigDecimal.valueOf(45998.796), delivered.getDemandAsDecimal().compareTo(BigDecimal.valueOf(45998.796)) == 0);
         } catch (IOException e) {
             e.printStackTrace();
